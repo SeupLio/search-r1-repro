@@ -1,0 +1,8 @@
+{
+  "n_corpus": 45,
+  "n_cases": 212,
+  "top3_recall_hit_rate": 0.9898,
+  "numeric_questions": 85,
+  "unanswerable_questions": 16,
+  "note": "用问题原文直接检索的召回率上界；真实 rollout 会改写 query，通常更低。"
+}

@@ -1,0 +1,103 @@
+# =============================================================================
+# Search-R1 / PPO / Qwen2.5-3B-Base  —— 逐条对齐论文 Appendix B.2
+# 论文原文参数见右侧注释；凡是无法对齐的项都标了 [DEVIATION]
+# =============================================================================
+
+data:
+  train_files: data/nq_hotpotqa_train.parquet     # NQ train + HotpotQA train 合并
+  val_files: data/nq_test.parquet                 # 7 个 benchmark 至少放一个进来
+  train_batch_size: 512                           # 论文 total batch size = 512
+  max_prompt_length: 4096                         # 论文 max sequence length = 4096
+  max_response_length: 500                        # 论文 max_response_length = 500
+  return_raw_chat: True
+  shuffle: True
+  filter_overlong_prompts: True
+  truncation: error
+
+actor_rollout_ref:
+  model:
+    path: Qwen/Qwen2.5-3B                            # 论文 Qwen2.5-3B (Base)
+    enable_gradient_checkpointing: True              # 论文启用 gradient checkpointing
+    trust_remote_code: True
+
+  actor:
+    optim:
+      lr: 1.0e-6                                     # 论文 policy lr = 1e-6
+      lr_warmup_steps_ratio: 0.285                   # 论文 warm-up ratio = 0.285
+    ppo_mini_batch_size: 256                         # 论文 mini-batch = 256
+    ppo_micro_batch_size_per_gpu: 64                 # 论文 micro-batch = 64
+    use_kl_loss: True
+    kl_loss_coef: 0.001                              # 论文 KL coefficient beta = 0.001
+    kl_loss_type: low_var_kl
+    clip_ratio: 0.2                                  # 论文 clip ratio eps = 0.2
+    entropy_coeff: 0.0
+    ulysses_sequence_parallel_size: 1
+    fsdp_config:
+      param_offload: True                            # 论文 FSDP + CPU offloading
+      optimizer_offload: True
+      wrap_policy:
+        min_num_params: 0
+
+  rollout:
+    name: sglang                                     # [DEVIATION] 论文用 vLLM 0.6.3
+    mode: sync
+    tensor_model_parallel_size: 1                    # 论文 tensor parallel size = 1
+    gpu_memory_utilization: 0.6                      # 论文 0.6
+    temperature: 1.0                                 # 论文 temperature = 1.0
+    top_p: 1.0                                       # 论文 top-p = 1.0
+    top_k: -1
+    n: 1                                             # PPO：每 prompt 采样 1 条
+    log_prob_micro_batch_size_per_gpu: 16
+    free_cache_engine: True
+    enforce_eager: False
+    # SGLang 特有：前缀缓存对多轮 rollout 收益很大，但会改变 KV 复用行为，
+    # 与 vLLM 基线对比时建议先关掉再开，观察是否影响 reward 曲线。
+    disable_radix_cache: False
+    multi_turn:
+      enable: True                                   # 多轮检索-推理交织
+      max_turns: 4                                   # 论文 max action budget B = 4
+      format: search_r1                              # <search>/<information>/<answer>
+      tool_config_path: configs/search_tool_config.yaml
+
+  ref:
+    fsdp_config:
+      param_offload: True
+      wrap_policy:
+        min_num_params: 0
+    log_prob_micro_batch_size_per_gpu: 16
+
+critic:
+  optim:
+    lr: 1.0e-5                                       # 论文 value LLM lr = 1e-5
+    lr_warmup_steps_ratio: 0.015                     # 论文 warm-up ratio = 0.015
+  model:
+    path: Qwen/Qwen2.5-3B
+    enable_gradient_checkpointing: True
+  ppo_mini_batch_size: 256
+  ppo_micro_batch_size_per_gpu: 64
+  ppo_epochs: 1
+  cliprange_value: 0.5
+  fsdp_config:
+    param_offload: True
+    optimizer_offload: True
+
+algorithm:
+  adv_estimator: gae                                 # 论文 PPO 用 GAE
+  gamma: 1.0                                         # 论文 lambda = 1, gamma = 1
+  lam: 1.0
+  norm_adv_by_std_in_grpo: False
+  use_kl_in_reward: False
+
+trainer:
+  critic_warmup: 0
+  n_gpus_per_node: 8                                 # [DEVIATION] 非 8xH100 时改这里
+  nnodes: 1
+  total_epochs: 1
+  total_training_steps: 500                          # 论文训练 500 steps
+  save_freq: 100                                     # 论文每 100 步存 ckpt
+  test_freq: 100
+  val_before_train: False
+  project_name: search_r1_repro
+  experiment_name: ppo_qwen2.5-3b-base
+  logger: ["console", "wandb"]
+  default_local_dir: checkpoints/search_r1_ppo_3b

@@ -1,0 +1,38 @@
+{
+  "n": 212,
+  "counts": {
+    "correct": 87,
+    "format_error": 21,
+    "no_search": 31,
+    "over_search": 14,
+    "retrieval_miss": 17,
+    "query_poor": 0,
+    "unfaithful": 17,
+    "aggregation_error": 24,
+    "gold_strict": 1
+  },
+  "distribution": {
+    "correct": 0.4104,
+    "format_error": 0.0991,
+    "no_search": 0.1462,
+    "over_search": 0.066,
+    "retrieval_miss": 0.0802,
+    "query_poor": 0.0,
+    "unfaithful": 0.0802,
+    "aggregation_error": 0.1132,
+    "gold_strict": 0.0047
+  },
+  "by_behavior": {
+    "ideal": 105,
+    "bad_query": 17,
+    "over_search": 14,
+    "no_search": 31,
+    "format_fail": 21,
+    "unfaithful": 24
+  },
+  "by_difficulty": {
+    "hard": 32,
+    "medium": 90,
+    "easy": 90
+  }
+}

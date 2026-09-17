@@ -1,0 +1,194 @@
+{
+  "Direct": {
+    "EM": 0.1698,
+    "avg_valid_search": 0.0,
+    "failure_distribution": {
+      "correct": 0.0,
+      "format_error": 0.0,
+      "no_search": 1.0,
+      "over_search": 0.0,
+      "retrieval_miss": 0.0,
+      "query_poor": 0.0,
+      "unfaithful": 0.0,
+      "aggregation_error": 0.0,
+      "gold_strict": 0.0
+    },
+    "failure_counts": {
+      "correct": 0,
+      "format_error": 0,
+      "no_search": 212,
+      "over_search": 0,
+      "retrieval_miss": 0,
+      "query_poor": 0,
+      "unfaithful": 0,
+      "aggregation_error": 0,
+      "gold_strict": 0
+    },
+    "by_difficulty": {
+      "easy": 0.1889,
+      "hard": 0.125,
+      "medium": 0.1667
+    },
+    "by_task": {
+      "aggregate_avg": 0.1667,
+      "aggregate_count": 0.3333,
+      "aggregate_max": 0.0556,
+      "cross_platform_compare": 0.25,
+      "multi_hop_compare": 0.2222,
+      "single_hop_author": 0.2174,
+      "single_hop_date": 0.1111,
+      "single_hop_numeric": 0.2041,
+      "unanswerable": 0.0
+    },
+    "by_platform": {
+      "bilibili": 0.1791,
+      "cross": 0.25,
+      "douyin": 0.1692,
+      "xiaohongshu": 0.1406
+    }
+  },
+  "RAG": {
+    "EM": 0.7642,
+    "avg_valid_search": 1.0,
+    "failure_distribution": {
+      "correct": 0.7642,
+      "format_error": 0.0,
+      "no_search": 0.0,
+      "over_search": 0.0,
+      "retrieval_miss": 0.0094,
+      "query_poor": 0.0,
+      "unfaithful": 0.0142,
+      "aggregation_error": 0.2123,
+      "gold_strict": 0.0
+    },
+    "failure_counts": {
+      "correct": 162,
+      "format_error": 0,
+      "no_search": 0,
+      "over_search": 0,
+      "retrieval_miss": 2,
+      "query_poor": 0,
+      "unfaithful": 3,
+      "aggregation_error": 45,
+      "gold_strict": 0
+    },
+    "by_difficulty": {
+      "easy": 1.0,
+      "hard": 0.4062,
+      "medium": 0.6556
+    },
+    "by_task": {
+      "aggregate_avg": 0.8889,
+      "aggregate_count": 0.8889,
+      "aggregate_max": 0.3611,
+      "cross_platform_compare": 0.8125,
+      "multi_hop_compare": 0.7778,
+      "single_hop_author": 1.0,
+      "single_hop_date": 1.0,
+      "single_hop_numeric": 1.0,
+      "unanswerable": 0.0
+    },
+    "by_platform": {
+      "bilibili": 0.6866,
+      "cross": 0.8125,
+      "douyin": 0.8,
+      "xiaohongshu": 0.7969
+    }
+  },
+  "Search-R1": {
+    "EM": 0.7877,
+    "avg_valid_search": 2.849,
+    "failure_distribution": {
+      "correct": 0.7877,
+      "format_error": 0.0,
+      "no_search": 0.0,
+      "over_search": 0.0,
+      "retrieval_miss": 0.0,
+      "query_poor": 0.0,
+      "unfaithful": 0.0142,
+      "aggregation_error": 0.1981,
+      "gold_strict": 0.0
+    },
+    "failure_counts": {
+      "correct": 167,
+      "format_error": 0,
+      "no_search": 0,
+      "over_search": 0,
+      "retrieval_miss": 0,
+      "query_poor": 0,
+      "unfaithful": 3,
+      "aggregation_error": 42,
+      "gold_strict": 0
+    },
+    "by_difficulty": {
+      "easy": 1.0,
+      "hard": 0.4375,
+      "medium": 0.7
+    },
+    "by_task": {
+      "aggregate_avg": 0.8889,
+      "aggregate_count": 0.8889,
+      "aggregate_max": 0.4722,
+      "cross_platform_compare": 0.875,
+      "multi_hop_compare": 0.7778,
+      "single_hop_author": 1.0,
+      "single_hop_date": 1.0,
+      "single_hop_numeric": 1.0,
+      "unanswerable": 0.0
+    },
+    "by_platform": {
+      "bilibili": 0.7313,
+      "cross": 0.875,
+      "douyin": 0.8154,
+      "xiaohongshu": 0.7969
+    }
+  },
+  "Search-R1+Abstain": {
+    "EM": 0.8349,
+    "avg_valid_search": 2.849,
+    "failure_distribution": {
+      "correct": 0.8349,
+      "format_error": 0.0,
+      "no_search": 0.0,
+      "over_search": 0.0,
+      "retrieval_miss": 0.0,
+      "query_poor": 0.0,
+      "unfaithful": 0.0142,
+      "aggregation_error": 0.1509,
+      "gold_strict": 0.0
+    },
+    "failure_counts": {
+      "correct": 177,
+      "format_error": 0,
+      "no_search": 0,
+      "over_search": 0,
+      "retrieval_miss": 0,
+      "query_poor": 0,
+      "unfaithful": 3,
+      "aggregation_error": 32,
+      "gold_strict": 0
+    },
+    "by_difficulty": {
+      "easy": 1.0,
+      "hard": 0.75,
+      "medium": 0.7
+    },
+    "by_task": {
+      "aggregate_avg": 0.8889,
+      "aggregate_count": 0.8889,
+      "aggregate_max": 0.4722,
+      "cross_platform_compare": 0.875,
+      "multi_hop_compare": 0.7778,
+      "single_hop_author": 1.0,
+      "single_hop_date": 1.0,
+      "single_hop_numeric": 1.0,
+      "unanswerable": 0.625
+    },
+    "by_platform": {
+      "bilibili": 0.8209,
+      "cross": 0.875,
+      "douyin": 0.8462,
+      "xiaohongshu": 0.8281
+    }
+  }
+}

@@ -1,0 +1,21 @@
+# 复现本仓库所需的最小依赖。
+# 注意：RL 训练依赖（verl / vllm / sglang / faiss 等）请按 ENV.md 安装，
+# 版本比范围重要得多，这里不锁死，避免误导。
+
+# ---- 离线分析 & 出图 & dry-run（CPU 即可） ----
+numpy
+matplotlib
+
+# ---- 数据处理 ----
+pandas
+pyarrow
+datasets
+
+# ---- 评测 / 推理调用 ----
+openai            # 用于对接 SGLang 的 OpenAI 兼容接口
+
+# ---- 可选 ----
+# wandb            # 训练日志导出 scripts/07_export_run_logs.py
+# tensorboard      # 同上，tensorboard 来源
+# faiss-cpu        # 本地小规模检索
+# transformers     # 换 embeddings 时需要

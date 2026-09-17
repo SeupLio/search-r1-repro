@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 本机/临时 & 调试脚本（含凭据处理，禁止入库）
+_probe_env.py
+_probe_out.txt
+_runall.log
+_edge_profile/
+*.log
+_*.py
+_*.ps1
+
+# Demo 中间产物（可由脚本重建）
+demo/audio/
+demo/_narration_mix.wav
+demo/search_r1_demo_silent.mp4
+
+# 训练产物（体积大，不入库）
+checkpoints/
+Search-R1/
+wandb/
+logs/
+*.bin
+*.index
+*.faiss
+
+# 语料（可脚本重建）
+data/wiki/
+data/*.jsonl.gz
+data/*_corpus_raw.jsonl
+
+# 系统
+.DS_Store
+Thumbs.db

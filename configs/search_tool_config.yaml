@@ -1,0 +1,13 @@
+# 检索工具配置（verl multi_turn tool 接口 / Search-R1 原版 llm_agent 共用）
+tools:
+  - class_name: "searchr1_repro.verl_tool.SearchTool"
+    config:
+      type: native
+      retrieval_service_url: "http://127.0.0.1:8000/retrieve"
+      topk: 3                        # 论文 top-k = 3
+      max_retrieved_tokens: 500      # 论文 retrieved content 上限 500 tokens
+      timeout: 30
+      # 下面三项是本仓库加的健壮性开关（论文未提及，但真机必须处理）
+      retry: 2
+      dedup_by_doc_id: true          # 多轮重复召回同一条时去重，避免浪费 context budget
+      on_error: "return_empty"       # 检索服务挂了不要整个 rollout 崩掉
