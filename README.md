@@ -29,7 +29,39 @@
 | 重建曲线 | 依据论文 figure 坐标轴 + 文字描述重建的**示意曲线** | 文件带 `provenance=reconstructed_from_paper`，图上打红色水印 |
 | 本地实跑 | 本仓库真实执行的 pipeline（dry-run / 自建评测集） | `results/dryrun/`、`results/failure_attribution/` |
 
-**本次交付未包含真实 GPU 训练结果**（无 8×H100 环境）。真机跑完后，把
+## 第二轮补充：真机实测（RTX 3060 6GB，CUDA）
+
+本机配备 **NVIDIA GeForce RTX 3060 Laptop GPU（6GB）**，已装 PyTorch 2.5.1+cu121，
+两项实测已完成：
+
+**① E5 稠密检索 recall@k 自检**（`analysis/recall_selfcheck.py`，196 题，真实 E5 权重）
+
+| 语料规模 | 稀疏 TF-IDF R@3 | E5 稠密 R@3 |
+|---|---|---|
+| 45 | 0.990 | 0.980 |
+| 500 | 0.668 | **0.689** |
+| 5000 | **0.658** | 0.648 |
+
+→ 关键修正：此前"top-3 召回 98.98%、检索几乎不漏"是 **45 条微型语料的假象**；
+5000 条规模下召回仅约 0.65。**并且 E5 在元数据密集的中文短文本上并不优于词法检索。**
+
+**② 真机 GRPO 训练**（`searchr1_repro/grpo_train.py`，Qwen2.5-0.5B-Instruct + LoRA）
+
+3 个真实训练步跑通，step 3 出现 `useful_groups=1`（组内方差 → 真实梯度更新，loss=-0.98）。
+即：多轮 rollout + 检索 token mask + EM 奖励 + 分组相对优势，**整条 RL 闭环在真机 GPU 上验证通过**。
+
+> ⚠️ **已知限制**：本机 GPU 存在驱动级不稳定，`model.generate` 单进程连续调用约 6 次后硬崩
+> （换 dtype / 关梯度检查点 / 开 KV cache / 周期 empty_cache 均无效），因此**多 seed 长训练曲线无法在此产出**。
+> 训练器已做每步增量落盘，换到稳定 GPU 环境后直接跑即可：
+> ```bash
+> python -m searchr1_repro.grpo_train --seed 0 --steps 500
+> ```
+
+**模型权重来源**：huggingface.co 在受限网络下不可达，故提供
+`scripts/download_model_modelscope.py` 从 ModelScope 拉取等价权重（文件格式与 HF 一致，
+`from_pretrained` 可直接加载），已验证 Qwen2.5-0.5B-Instruct 与 multilingual-e5-base。
+
+真机跑完后，把
 `scripts/07_export_run_logs.py` 导出的 CSV 放进 `results/runs/`，
 `analysis/make_figures.py` 会自动用真实曲线替换掉重建曲线，其余代码零改动。
 

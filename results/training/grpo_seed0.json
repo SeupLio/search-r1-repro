@@ -1,0 +1,75 @@
+{
+  "args": {
+    "model": "E:\\paper\\search-r1-repro\\models\\Qwen2.5-0.5B-Instruct",
+    "corpus": "E:\\paper\\search-r1-repro\\data\\content_corpus.jsonl",
+    "eval": "E:\\paper\\search-r1-repro\\data\\content_eval.jsonl",
+    "domain": "content",
+    "mode": "lora",
+    "steps": 3,
+    "prompts_per_step": 1,
+    "group_size": 2,
+    "gen_tokens": 24,
+    "max_turns": 2,
+    "topk": 3,
+    "lr": 0.0002,
+    "clip": 1.0,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "max_len": 320,
+    "loss_chunk": 1,
+    "eval_every": 99,
+    "eval_n": 1,
+    "skip_baseline": true,
+    "seed": 0,
+    "out": "results\\training\\grpo_seed0.json"
+  },
+  "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+  "baseline": {
+    "step": 1,
+    "train_reward": 0.0,
+    "loss": 0.0,
+    "n_search": 0.0,
+    "useful_groups": 0,
+    "n_groups": 1,
+    "eval_em": null
+  },
+  "final": {
+    "step": 3,
+    "train_reward": 0.5,
+    "loss": -0.9824212193489075,
+    "n_search": 0.5,
+    "useful_groups": 1,
+    "n_groups": 1,
+    "eval_em": null
+  },
+  "history": [
+    {
+      "step": 1,
+      "train_reward": 0.0,
+      "loss": 0.0,
+      "n_search": 0.0,
+      "useful_groups": 0,
+      "n_groups": 1,
+      "eval_em": null
+    },
+    {
+      "step": 2,
+      "train_reward": 0.0,
+      "loss": 0.0,
+      "n_search": 0.5,
+      "useful_groups": 0,
+      "n_groups": 1,
+      "eval_em": null
+    },
+    {
+      "step": 3,
+      "train_reward": 0.5,
+      "loss": -0.9824212193489075,
+      "n_search": 0.5,
+      "useful_groups": 1,
+      "n_groups": 1,
+      "eval_em": null
+    }
+  ],
+  "note": "completed"
+}

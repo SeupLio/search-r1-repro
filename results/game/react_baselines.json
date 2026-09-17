@@ -1,0 +1,39 @@
+{
+  "args": {
+    "methods": [
+      "act",
+      "react"
+    ],
+    "tasks": 4,
+    "max_steps": 5,
+    "max_new": 36,
+    "out": "E:\\paper\\search-r1-repro\\results\\game\\react_baselines.json"
+  },
+  "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+  "runs": [
+    {
+      "method": "act",
+      "task": "g000",
+      "quest": "把「火柴」送到书房。",
+      "success": false,
+      "steps": 5,
+      "reflection": ""
+    },
+    {
+      "method": "act",
+      "task": "g001",
+      "quest": "把「水桶」送到阁楼。",
+      "success": false,
+      "steps": 5,
+      "reflection": ""
+    },
+    {
+      "method": "act",
+      "task": "g002",
+      "quest": "找到「铁钥匙」并进入地窖。",
+      "success": false,
+      "steps": 5,
+      "reflection": ""
+    }
+  ]
+}

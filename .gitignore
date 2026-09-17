@@ -19,6 +19,11 @@ demo/audio/
 demo/_narration_mix.wav
 demo/search_r1_demo_silent.mp4
 
+# 模型权重（体积大，用 scripts/download_model_modelscope.py 重新拉取）
+models/
+*.safetensors
+*.bin
+
 # 训练产物（体积大，不入库）
 checkpoints/
 Search-R1/
