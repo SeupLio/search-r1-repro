@@ -1,5 +1,7 @@
 # Search-R1 复现 + 内容平台迁移（verl + SGLang）
 
+> 在线仓库：https://github.com/SeupLio/search-r1-repro ｜ Demo 视频：`demo/search_r1_demo.mp4`
+
 对 [Search-R1](https://github.com/PeterGriffinJin/Search-R1)（arXiv:2503.09516v5, COLM 2025）
 的完整复现工程，并把它迁移到 **B站 / 小红书 / 抖音** 内容平台问答场景。
 

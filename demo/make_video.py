@@ -247,7 +247,7 @@ def draw_title_card(d, sec, p):
     if p > 0.35:
         a2 = ease((p - 0.35) / 0.25)
         d.line([(W // 2 - 260, 580), (W // 2 + 260, 580)], fill=LIGHT, width=3)
-        d.text((W // 2, 640), "github.com/Belovedarling/search-r1-repro", font=font(34, True),
+        d.text((W // 2, 640), "github.com/SeupLio/search-r1-repro", font=font(34, True),
                fill=BLUE, anchor="ma")
         d.text((W // 2, 700), "Search-R1: Training LLMs to Reason and Leverage Search Engines with RL",
                font=font(26), fill=GREY, anchor="ma")
