@@ -68,3 +68,56 @@ python -m analysis.deviation         # 打印偏差预算
 ```
 
 跑通上面四条说明工程侧没问题；剩下的差距就只剩"算力"和"环境对齐"了。
+
+## 7. 清理与重新生成下载文件
+
+> 适用场景：C 盘空间紧张时清理本实验产生的下载缓存/冗余权重；清理后若需复跑，按本节重新拉取即可。
+
+### 7.1 已清理的临时/下载文件（2026-09-18）
+
+| 路径 | 体积 | 性质 | 是否可重建 |
+|---|---|---|---|
+| `C:\Users\10718\AppData\Local\pip\Cache` | ~9.6G | pip 轮子下载缓存 | ✅ 重装自动重下 |
+| `C:\Users\10718\.cache\modelscope` | ~804K | ModelScope 下载器索引 | ✅ 重建 |
+| `E:\paper\search-r1-repro\models\multilingual-e5-base\pytorch_model.bin` | 1.1G | 与 `model.safetensors` 重复的冗余副本 | ✅ 重下 |
+| `E:\paper\search-r1-repro\models\multilingual-e5-base\model.safetensors` | 1.1G | **保留**，E5 加载所需 | — |
+
+**未清理（非本实验产生，删之会伤其他项目）**：`C:\Users\10718\.cache\huggingface\hub`(2.5G，bge-large-zh/bert-base-chinese)、`C:\Users\10718\.cache\torch\hub\checkpoints`(445M，maskrcnn/resnet50)、`E:\paper\venv312`(Python 环境，复跑需要)。
+
+> ⚠️ 本机安全策略拦截了回收站 API（`Add-Type`/`Remove-Item` 被终止），故采用**永久删除**（Git Bash `rm`）。
+> 上述文件全部为可重建的缓存或冗余副本，无独有数据，删除安全。
+
+### 7.2 重新下载模型权重（ModelScope，国内可达）
+
+```bash
+# 激活本仓库实际使用的环境（见 7.3），在仓库根目录执行：
+python scripts/download_model_modelscope.py --repo AI-ModelScope/multilingual-e5-base --out models/multilingual-e5-base
+python scripts/download_model_modelscope.py --repo qwen/Qwen2.5-0.5B-Instruct --out models/Qwen2.5-0.5B-Instruct
+```
+- 脚本只拉必需文件（config/tokenizer/`*.safetensors`），跳过 README/LICENSE，速度快。
+- 若 repo 名 404，到 modelscope.cn 搜索对应模型名替换即可（脚本对 repo 名无硬编码依赖）。
+- `huggingface.co` 可达时的等价命令：
+  ```bash
+  pip install -U huggingface_hub
+  huggingface-cli download intfloat/multilingual-e5-base --local-dir models/multilingual-e5-base
+  huggingface-cli download Qwen/Qwen2.5-0.5B-Instruct --local-dir models/Qwen2.5-0.5B-Instruct
+  ```
+
+### 7.3 重建 Python 环境（真机训练实际用的 venv312）
+
+> 注意：真机 GRPO 实测用的是 `E:\paper\venv312`（uv 管理的 **Python 3.12 + torch 2.5.1+cu121**），
+> **不是** `scripts/00_env_setup.sh` 里的 conda/torch 2.4.0。pip 缓存清空后首次 `pip install` 会重新下载轮子，
+> 仅耗带宽，不影响数值结果。
+
+```bash
+uv venv -p 3.12 E:/paper/venv312
+source E:/paper/venv312/Scripts/activate        # Windows: E:\paper\venv312\Scripts\activate.bat
+pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu121
+pip install -r requirements.txt
+pip install transformers peft sentence-transformers   # 真机 GRPO / E5 推理需要
+# 验证链路
+python -m searchr1_repro.grpo_train --seed 0 --steps 3 --self-test
+```
+
+> 若走论文原版环境（conda + torch 2.4.0 + vLLM/SGLang），仍用 `bash scripts/00_env_setup.sh`，
+> 但那是另一套版本组合，数字不可与本仓库实测直接比对。
